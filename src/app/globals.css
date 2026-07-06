@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #F8F6F0;
+  --ink-soft: #F1EFE8;
+  --paper: #F3F4F6;
+  --chalk: #1A1A2E;
+  --signal: #5271FF;
+  --signal-bg: rgba(82, 113, 255, 0.15);
+  --wire: #5271FF;
+  --wire-dim: #3B63CC;
+  --muted: #6B7280;
+  --line: rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(ellipse 800px 600px at 10% 20%, rgba(82, 113, 255, 0.15), transparent),
+    radial-gradient(ellipse 600px 600px at 90% 80%, rgba(82, 113, 255, 0.10), transparent),
+    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(82, 113, 255, 0.05), transparent);
+  background-repeat: no-repeat;
+  background-position: 0% 0%, 0% 0%, 50% 50%;
+  animation: bgShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes bgShift {
+  0%   { background-position: 0% 0%, 0% 0%, 50% 50%; }
+  100% { background-position: 15% 10%, -8% -5%, 45% 55%; }
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: transparent;
+  color: var(--chalk);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
