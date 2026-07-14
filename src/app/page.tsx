@@ -1,26 +1,27 @@
-import { Badge } from "@/components/waitlist/badge";
-import { Ticker } from "@/components/waitlist/ticker";
-import { HowItWorks } from "@/components/waitlist/how-it-works";
-import { WaitlistForm } from "@/components/waitlist/waitlist-form";
-import styles from "@/app/waitlist.module.css";
+import { Nav } from "@/components/Nav";
+import { Hero } from "@/components/Hero";
+import { TrustStrip } from "@/components/TrustStrip";
+import { HowItWorks } from "@/components/HowItWorks";
+import { ValueProps } from "@/components/ValueProps";
+import { DataSection } from "@/components/DataSection";
+import { FAQ } from "@/components/FAQ";
+import { FinalCTA } from "@/components/FinalCTA";
+import { Footer } from "@/components/Footer";
 
-export default function WaitlistPage() {
+export default function LiidiaPage() {
   return (
-    <div className={`${styles.wrap} max-w-6xl`}>
-      <Badge />
-      <div>
-        <h1 className={styles.heading}>
-          Turn your <em>crypto</em> into <em>spendable cash</em> without selling it
-        </h1>
-        <p className={styles.sub}>
-          Deposit crypto into trusted lending protocols and borrow real cash against it —{" "}
-          <strong>sent straight to your bank or mobile wallet.</strong> No selling. No
-          liquidating your position. No crypto knowledge required.
-        </p>
-        <Ticker />
+    <>
+      <Nav />
+      <main style={{ position: "relative", zIndex: 1 }}>
+        <Hero />
+        {/* <TrustStrip />
         <HowItWorks />
-      </div>
-      <WaitlistForm />
-    </div>
+        <ValueProps />
+        <DataSection />
+        <FAQ />
+        <FinalCTA /> */}
+      </main>
+      <Footer />
+    </>
   );
 }

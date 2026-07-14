@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, startTransition } from "react";
 import styles from "@/app/waitlist.module.css";
 
 interface Prices {
@@ -46,7 +46,9 @@ export function Ticker() {
   }, []);
 
   useEffect(() => {
-    fetchPrices();
+    startTransition(() => {
+      fetchPrices();
+    });
     const id = setInterval(fetchPrices, 60000);
     return () => clearInterval(id);
   }, [fetchPrices]);
@@ -61,7 +63,9 @@ export function Ticker() {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    setFading(true);
+    startTransition(() => {
+      setFading(true);
+    });
     const id = setTimeout(() => setFading(false), 150);
     return () => clearTimeout(id);
   }, [i]);

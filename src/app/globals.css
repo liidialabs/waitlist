@@ -1,43 +1,259 @@
 @import "tailwindcss";
 
+/* ========================================
+   DESIGN TOKENS
+   ======================================== */
+
 :root {
-  --ink: #F8F6F0;
-  --ink-soft: #F1EFE8;
-  --paper: #F3F4F6;
-  --chalk: #1A1A2E;
-  --signal: #5271FF;
-  --signal-bg: rgba(82, 113, 255, 0.15);
-  --wire: #5271FF;
-  --wire-dim: #3B63CC;
-  --muted: #6B7280;
-  --line: rgba(0, 0, 0, 0.08);
+  /* Primary palette */
+  --color-primary: #5271FF;
+  --color-primary-dim: #3B63CC;
+  --color-primary-light: #7B8FFF;
+  --color-primary-glow: rgba(82, 113, 255, 0.25);
+  --color-accent: #FF6B6B;
+  --color-accent-dim: #E85555;
+  --color-accent-glow: rgba(255, 107, 107, 0.2);
+
+  /* Dark theme (default) */
+  --color-bg: #14151F;
+  --color-bg-elevated: #1C1D27;
+  --color-bg-card: rgba(255, 255, 255, 0.04);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.07);
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-text: #F7F6F2;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.12);
+  --color-nav-bg: rgba(20, 21, 31, 0.8);
+
+  /* Typography */
+  --font-display: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  --font-body: var(--font-inter), 'Inter', -apple-system, sans-serif;
+  --font-mono: var(--font-mono), 'IBM Plex Mono', monospace;
+
+  /* Spacing */
+  --section-padding: 120px;
+  --section-padding-mobile: 64px;
+  --container-max: 1200px;
+  --container-padding: 24px;
+
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 40px var(--color-primary-glow);
 }
+
+/* Light theme */
+[data-theme="light"] {
+  --color-bg: #F7F6F2;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-card: rgba(0, 0, 0, 0.02);
+  --color-bg-card-hover: rgba(0, 0, 0, 0.04);
+  --color-surface: rgba(0, 0, 0, 0.04);
+  --color-text: #0A0B14;
+  --color-text-secondary: #4B5563;
+  --color-text-muted: #9CA3AF;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+  --color-nav-bg: rgba(247, 246, 242, 0.85);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 40px rgba(82, 113, 255, 0.12);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
 
 * {
   box-sizing: border-box;
 }
 
 html {
-  background-color: var(--ink);
-  background-image:
-    radial-gradient(ellipse 800px 600px at 10% 20%, rgba(82, 113, 255, 0.15), transparent),
-    radial-gradient(ellipse 600px 600px at 90% 80%, rgba(82, 113, 255, 0.10), transparent),
-    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(82, 113, 255, 0.05), transparent);
-  background-repeat: no-repeat;
-  background-position: 0% 0%, 0% 0%, 50% 50%;
-  animation: bgShift 20s ease-in-out infinite alternate;
-}
-
-@keyframes bgShift {
-  0%   { background-position: 0% 0%, 0% 0%, 50% 50%; }
-  100% { background-position: 15% 10%, -8% -5%, 45% 55%; }
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
   background: transparent;
-  color: var(--chalk);
-  font-family: 'Inter', sans-serif;
+  color: var(--color-text);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   NOISE TEXTURE OVERLAY
+   ======================================== */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ========================================
+   GRADIENT BLOBS
+   ======================================== */
+
+.blob-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blob-bg .blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: blobFloat 20s ease-in-out infinite alternate;
+}
+
+.blob-bg .blob-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(82, 113, 255, 0.5) 0%, transparent 70%);
+  top: -10%;
+  left: -5%;
+  animation-duration: 22s;
+}
+
+.blob-bg .blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 107, 107, 0.25) 0%, transparent 70%);
+  bottom: 10%;
+  right: -5%;
+  animation-duration: 18s;
+  animation-delay: -5s;
+}
+
+.blob-bg .blob-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(82, 113, 255, 0.3) 0%, transparent 70%);
+  top: 40%;
+  left: 30%;
+  animation-duration: 25s;
+  animation-delay: -10s;
+}
+
+@keyframes blobFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  100% {
+    transform: translate(15px, -15px) scale(1.02);
+  }
+}
+
+[data-theme="light"] .blob-bg .blob {
+  opacity: 0.2;
+}
+
+[data-theme="light"] .blob-bg .blob-1 {
+  background: radial-gradient(circle, rgba(82, 113, 255, 0.35) 0%, transparent 70%);
+}
+
+[data-theme="light"] .blob-bg .blob-2 {
+  background: radial-gradient(circle, rgba(255, 107, 107, 0.15) 0%, transparent 70%);
+}
+
+[data-theme="light"] .blob-bg .blob-3 {
+  background: radial-gradient(circle, rgba(82, 113, 255, 0.2) 0%, transparent 70%);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.glass {
+  background: var(--color-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+}
+
+.glass-strong {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid var(--color-border-strong);
+}
+
+.section-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.section-padding {
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+}
+
+/* ========================================
+   SELECTION
+   ======================================== */
+
+::selection {
+  background: var(--color-primary-glow);
+  color: var(--color-text);
+}
+
+/* ========================================
+   SCROLLBAR (dark)
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ========================================
+   FOCUS STYLES
+   ======================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
